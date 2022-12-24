@@ -2,10 +2,40 @@ import logging
 import logging.handlers
 import asyncio
 import os
+from typing import List, Optional
 from discord.ext import commands
 import discord
 
-from cogs.music import Music
+from lib.data.tiny import get_db
+from lib.cogs.music import Music
+
+
+class AndyBot(commands.Bot):
+    def __init__(
+        self,
+        *args,
+        initial_extensions: List[str],
+        db_name: Optional[str] = None,
+        testing_guild_id: Optional[int] = None,
+        **kwargs,
+    ):
+        super().__init__(*args, **kwargs)
+        self.db_name = db_name
+        self.testing_guild_id = testing_guild_id
+        self.initial_extensions = initial_extensions
+
+    async def setup_hook(self) -> None:
+        for extension in self.initial_extensions:
+            await self.load_extension(extension)
+
+        if self.testing_guild_id:
+            guild = discord.Object(self.testing_guild_id)
+            # We'll copy in the global commands to test with:
+            self.tree.copy_global_to(guild=guild)
+            # followed by syncing to the testing guild.
+            await self.tree.sync(guild=guild)
+
+        get_db(self.db_name)
 
 
 async def main():
@@ -29,14 +59,16 @@ async def main():
     intents = discord.Intents.default()
     intents.message_content = True
 
-    bot = commands.Bot(
+    # Default initialized extensions
+    exts = ["lib.cogs.music", "lib.cogs.backup_db"]
+
+    async with AndyBot(
         intents=intents,
         command_prefix=commands.when_mentioned_or("!"),
         description="A bot representing NYS's late Governor Andy Cuomo",
-    )
-
-    await bot.load_extension("cogs.music")
-    await bot.start(os.getenv("DISCORD_TOKEN", ""))
+        initial_extensions=exts,
+    ) as bot:
+        await bot.start(os.getenv("DISCORD_TOKEN", ""))
 
 
 asyncio.run(main())
