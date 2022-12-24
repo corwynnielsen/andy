@@ -145,3 +145,9 @@ cython_debug/
 
 # VS Code files
 .vscode/
+
+# TinyDB DB file
+db.json
+
+# Mac hidden file
+.DS_STORE
