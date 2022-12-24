@@ -7,7 +7,6 @@ class Vote:
         self,
         created_by: str,
         display_name: str,
-        answer: str | bool,
         selectedOption: str | bool,
     ):
         self.created_date = (
@@ -17,5 +16,4 @@ class Vote:
         )
         self.created_by = created_by
         self.display_name = display_name
-        self.answer = answer
         self.selectedOption = selectedOption

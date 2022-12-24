@@ -1,6 +1,6 @@
 from discord.ext import commands, tasks
 
-from lib.data.tiny import backup_db_to_s3
+from lib.data import tiny
 
 BACKUP_SECONDS = 0
 BACKUP_MINUTES = 0
@@ -15,7 +15,7 @@ class BackupDb(commands.Cog):
     @tasks.loop(seconds=BACKUP_SECONDS, minutes=BACKUP_MINUTES, hours=BACKUP_HOURS)
     async def backup_db(self):
         if self.backup_db.current_loop != 0:
-            backup_db_to_s3()
+            tiny.backup_db_to_s3()
 
 
 async def setup(bot):

@@ -6,7 +6,7 @@ from typing import List, Optional
 from discord.ext import commands
 import discord
 
-from lib.data.tiny import get_db_from_s3
+from lib.data import tiny
 
 
 class AndyBot(commands.Bot):
@@ -34,7 +34,7 @@ class AndyBot(commands.Bot):
             # followed by syncing to the testing guild.
             await self.tree.sync(guild=guild)
 
-        get_db_from_s3(self.db_name)
+        tiny.get_db_from_s3(self.db_name)
 
 
 async def main():
