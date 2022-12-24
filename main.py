@@ -7,7 +7,6 @@ from discord.ext import commands
 import discord
 
 from lib.data.tiny import get_db_from_s3
-from music_cog import Music
 
 
 class AndyBot(commands.Bot):
@@ -60,7 +59,7 @@ async def main():
     intents.message_content = True
 
     # Default initialized extensions
-    exts = ["lib.cogs.music", "lib.cogs.poll_cog", "lib.cogs.backup_db"]
+    exts = ["lib.cogs.music_cog", "lib.cogs.poll_cog", "lib.cogs.backup_db_cog"]
 
     async with AndyBot(
         intents=intents,
