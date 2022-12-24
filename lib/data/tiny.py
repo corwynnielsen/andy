@@ -33,5 +33,3 @@ def backup_db():
             Key="{}andy-bot-backup-{}".format(DB_BACKUP_DIR, datetime.now()),
             Body=db_file,
         )
-
-
