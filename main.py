@@ -6,8 +6,8 @@ from typing import List, Optional
 from discord.ext import commands
 import discord
 
-from lib.data.tiny import get_db
-from lib.cogs.music import Music
+from lib.data.tiny import get_db_from_s3
+from music_cog import Music
 
 
 class AndyBot(commands.Bot):
@@ -35,7 +35,7 @@ class AndyBot(commands.Bot):
             # followed by syncing to the testing guild.
             await self.tree.sync(guild=guild)
 
-        get_db(self.db_name)
+        get_db_from_s3(self.db_name)
 
 
 async def main():
@@ -60,7 +60,7 @@ async def main():
     intents.message_content = True
 
     # Default initialized extensions
-    exts = ["lib.cogs.music", "lib.cogs.backup_db"]
+    exts = ["lib.cogs.music", "lib.cogs.poll_cog", "lib.cogs.backup_db"]
 
     async with AndyBot(
         intents=intents,

@@ -2,7 +2,7 @@ from typing import Optional
 from operator import attrgetter
 from datetime import datetime
 import os
-from aiotinydb import AIOTinyDB
+from tinydb import TinyDB
 import boto3
 
 DB_BACKUP_DIR = "tinydb/"
@@ -12,7 +12,7 @@ DB_FILE_DIR = "./{}".format(DB_LOCAL_FILE_NAME)
 BUCKET_NAME_ENV_VAR = "DISCORD_BOT_S3_BUCKET"
 
 
-def get_db(backup_name: Optional[str] = None):
+def get_db_from_s3(backup_name: Optional[str] = None):
     s3 = boto3.resource("s3")
     bucket = s3.Bucket("andy-bot-dev")
     if backup_name:
@@ -25,7 +25,7 @@ def get_db(backup_name: Optional[str] = None):
         last_modified_backup_obj.Object().download_file(DB_FILE_DIR)
 
 
-def backup_db():
+def backup_db_to_s3():
     s3 = boto3.resource("s3")
     bucket = s3.Bucket(os.getenv(BUCKET_NAME_ENV_VAR, "andy-bot-dev"))
     with open(DB_LOCAL_FILE_NAME, "rb") as db_file:
