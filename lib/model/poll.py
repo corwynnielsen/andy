@@ -14,18 +14,17 @@ class Poll:
         created_by: int,
         name: str,
         time_limit: int = 3,
-        options: Dict[int, str] = {1: "Yes", 2: "No"},
+        options: Optional[Dict[int, str]] = None,
         state: State = State.DRAFT,
-        votes: List[Vote] = [],
+        votes: Optional[List[Vote]] = None,
         created_date: Optional[str] = None,
     ):
-
         self.created_by = created_by
         self.name = name
         self.time_limit = time_limit
-        self.options = options
+        self.options = options if options else {1: "Yes", 2: "No"}
         self.state = state
-        self.votes = votes
+        self.votes = votes if votes else []
         self.created_date = (
             created_date
             if created_date

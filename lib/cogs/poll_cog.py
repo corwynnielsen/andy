@@ -33,7 +33,7 @@ class PollCog(commands.Cog):
         if self.current_poll is not None:
             name = self.current_poll.name
 
-            # When poll is confirmed in draft state, mark as in progeress and start poll timer
+            # When poll is confirmed in draft state, mark as in progress and start poll timer
             if self.current_poll.state == State.DRAFT:
                 await self.current_poll.mark_in_progress()
                 await ctx.send(
